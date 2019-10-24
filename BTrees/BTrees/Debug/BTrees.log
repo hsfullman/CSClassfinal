@@ -1,2 +1,5 @@
 ﻿  BTrees.cpp
+C:\Users\holly\source\repos\BTrees\BTrees\BTrees.cpp(44,25): warning C4099: 'BTree': type name first seen using 'class' now seen using 'struct'
+C:\Users\holly\source\repos\BTrees\BTrees\BTrees.cpp(6): message : see declaration of 'BTree'
+C:\Users\holly\source\repos\BTrees\BTrees\BTrees.cpp(62): warning C4715: 'Search': not all control paths return a value
   BTrees.vcxproj -> C:\Users\holly\source\repos\BTrees\Debug\BTrees.exe

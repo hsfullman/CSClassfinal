@@ -41,6 +41,85 @@ void insert(int dataElement, BTree* rootNode) {
 		}
 };
 
+bool Search(struct BTree* rootNode, int dataElement)
+{ 
+	if (rootNode == NULL) {
+		cout << "\nNot found";
+		return false;
+	}
+	if (rootNode != NULL && dataElement > rootNode->data) {
+		Search(rootNode->rightNode, dataElement);
+	}
+	else if (rootNode != NULL && dataElement < rootNode->data) {
+		Search(rootNode->leftNode, dataElement);
+	}
+	else if (dataElement == rootNode->data) {
+		cout << "\nFound";
+		return true; // if the key is found return 1 
+	}
+}
+int findSmallestNode(BTree* rootNode) {
+	if (rootNode == NULL) {
+		cout << "The tree is empty";
+		return -1000;
+	}
+	else {
+		if (rootNode->leftNode != NULL) {
+			return findSmallestNode(rootNode->leftNode);
+		}
+		else {
+			return rootNode->data;
+		}
+	}
+}
+void deleteNode(int dataElement, BTree* rootNode) {
+
+	if (rootNode != NULL) {
+		if (rootNode->data == dataElement) {
+			BTree* Pdelete = rootNode;
+			int rootData = rootNode->data;
+			int smallestRightSubTree;
+			//no children
+			if (rootNode->leftNode == NULL && rootNode->rightNode == NULL) {
+				rootNode = NULL;
+				delete Pdelete;
+				cout << "\nThe node with data element " << rootData << " was deleted.\n";
+			}
+			//1 child
+			else if (rootNode->leftNode == NULL && rootNode->rightNode != NULL) {
+				rootNode = rootNode->rightNode;
+				Pdelete->rightNode = NULL;
+				delete Pdelete;
+				cout << "The root node with data element " << rootData << " was deleted. The new root data element contains " << rootNode->data << "\n";
+			}
+			else if (rootNode->rightNode == NULL && rootNode->leftNode != NULL) {
+				rootNode = rootNode->leftNode;
+				Pdelete->leftNode = NULL;
+				delete Pdelete;
+				cout << "\nThe root node with data element " << rootData << " was deleted. The new root data element contains " << rootNode->data << "\n";
+			}
+			//2 children
+			else {
+				smallestRightSubTree = findSmallestNode(rootNode->rightNode);
+				deleteNode(smallestRightSubTree, rootNode);
+				rootNode->data = smallestRightSubTree;
+				cout << "\nThe root node with data element " << rootData << " was overwritten with data element " << rootNode->data << "\n";
+			}
+		}
+		else if (rootNode->data != dataElement) {
+			if (dataElement < rootNode->data && rootNode->leftNode != NULL) {
+				deleteNode(dataElement, rootNode->leftNode);
+			}
+			if (dataElement > rootNode->data && rootNode->rightNode != NULL) {
+					deleteNode(dataElement, rootNode->rightNode);
+			}
+		}
+		else {
+			cout << "Data element " << dataElement << " not found in tree\n";
+		}
+	}
+}
+
 int main()
 {
 	BTree root(8);
@@ -59,6 +138,9 @@ int main()
 	insert(9, rootNode);
 	counter = 1;
 	insert(11, rootNode);
+	Search(rootNode, 7);
+	deleteNode(5, rootNode);
+	
 	
 	/*
 	//create root
